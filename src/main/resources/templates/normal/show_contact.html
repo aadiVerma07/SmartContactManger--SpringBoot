@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" th:replace="normal/base::Layout(~{::section})">
+<head>
+    <meta charset="UTF-8">
+    <title >Title</title>
+</head>
+<body>
+<section >
+    <div class="card me-3 ms-3">
+        <div class="card-body">
+            <h1 class="text-center">Your Contacts</h1>
+            <div class="alert alert-success text-center" role="alert" th:text="${success}" th:if="${success}"></div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c:${contact}">
+                    <th scope="row" th:text="${'SCMUSER'+c.CId}">1</th>
+                    <td >
+                        <img class="my_profile_pic" src="" th:src="@{'/Img/'+${c.image}}" alt="display photo"/>
+                        <span th:text="${c.name}"> Name</span></td>
+                    <td><a href="#" th:href="@{'/user/'+${c.CId}+'/contact'}">
+                        <span th:text="${c.email}"></span>
+                    </a></td>
+                    <td th:text="${c.phone}">@mdo</td>
+                    <td >
+                        <a th:onclick="|deleteContact(${c.CId})|" class="btn  btn-sm btn-outline-danger" role="button">DELETE</a>
+                        <form method="post" th:action="@{'/user/update/'+${c.CId}}" style="display:inline;">
+                        <button class="btn btn-sm btn-outline-success " >UPDATE</button>
+                        </form>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+            <!-- Pagination part -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li th:if="${currentPage!=0}" class="page-item"><a th:href="@{'/user/show-Contact/'+${currentPage-1}}" class="page-link" href="#">Previous</a></li>
+                    <li th:classappend="${currentPage==i-1}?'active':''" th:each="i:${#numbers.sequence(1,totalPage)}" class="page-item">
+                        <a th:href="@{'/user/show-Contact/'+${i-1}}" class="page-link" href="#">
+                        <span th:text="${i}"></span>
+                    </a></li>
+                    <li th:if="${currentPage+1!=totalPage}" class="page-item"><a th:href="@{'/user/show-Contact/'+${currentPage+1}}"class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
